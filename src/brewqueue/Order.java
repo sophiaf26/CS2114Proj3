@@ -55,10 +55,11 @@ public class Order {
         int quantity,
         double minutesPerDrink,
         boolean rewardMember) {
-        if (orderId <= 0 || quantity <= 0 || minutesPerDrink <= 0 || Double
-            .isInfinite(minutesPerDrink) || Double.isNaN(minutesPerDrink)) {
+        if (orderId <= 0 || quantity <= 0 || minutesPerDrink <= 0 || !Double
+            .isFinite(minutesPerDrink)) {
             throw new IllegalArgumentException(
                 "ID, quantity, and time must be positive finite numbers.");
+
         }
 
         if (customerName == null || customerName.trim().isEmpty()
