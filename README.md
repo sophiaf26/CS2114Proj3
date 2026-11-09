@@ -1,5 +1,19 @@
 # CS2114Proj3
 # Brew Queue
+## Running the Thin View
+
+The thin view provides a basic console interface that allows users to interact with Brew Queue through the controller. It displays the menu, accepts user input, and displays waiting, in-progress, and completed orders.
+
+### How to Run
+
+1. Open the Brew Queue project in Eclipse.
+2. Locate `BrewQueueController.java`.
+3. Right-click the file and select **Run As → Java Application**.
+4. The Brew Queue menu will appear in the Eclipse console.
+5. Enter a menu choice to add, start, complete, or display orders.
+6. Enter `0` to exit the program.
+
+The controller connects the view and model. The view handles user input and output, while the model manages the orders and queues. This keeps the user interface separate from the program's main logic.
 
 ## Reflection
 
