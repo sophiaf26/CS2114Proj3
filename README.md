@@ -31,7 +31,7 @@ During development, we figured out how to implement a generic queue using nodes,
 
 We also worked out how the controller could communicate with the model and view without placing business logic in the view.
 
-Some features remain for the next prototype, including requeuing and canceling orders, wait-time estimates, and additional order-management options.
+Some features we will hold of on for the next prototype, including requeuing and canceling orders, wait-time estimates, and additional order-management options.
 
 ### What Doesn't Work Yet?
 
@@ -75,7 +75,6 @@ We predict the following changes:
 | `Order` | Should not need changes if its existing state methods support moving an order back to waiting. |
 | `Node<T>` | Should not need changes because its existing links already support queue operations. |
 
-We expect this feature to require changes to the model, controller, and view, but not queue implementation.
 
 ### Stretch Goals
 
