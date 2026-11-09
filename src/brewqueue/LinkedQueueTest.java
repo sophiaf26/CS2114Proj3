@@ -5,7 +5,7 @@ import student.TestCase;
 /**
  * Tests the LinkedQueue class.
  *
- * @author Rudra Dutta
+ * @author Rudra Dutta (drudra)
  * @version 2026.11.08
  */
 public class LinkedQueueTest extends TestCase

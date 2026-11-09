@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
  * A singly linked queue that stores elements in FIFO order.
  * Allows elements to be added to both the front and back of the queue.
  *
- * @author Rudra Dutta
+ * @author Rudra Dutta (drudra)
  * @version 2026.11.08
  * @param <T> the type of elements stored in the queue
  */
