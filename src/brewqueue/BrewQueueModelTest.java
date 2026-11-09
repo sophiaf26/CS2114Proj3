@@ -1,7 +1,7 @@
+package brewqueue;
 import java.time.Duration;
 import java.util.NoSuchElementException;
-import student.TestCase
-package brewqueue;
+import student.TestCase;
 
 /**
  * Tests the mdoel without view or controller
