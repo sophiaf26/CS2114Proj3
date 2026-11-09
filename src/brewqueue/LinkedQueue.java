@@ -11,8 +11,7 @@ import java.util.NoSuchElementException;
  * @version 2026.11.08
  * @param <T> the type of elements stored in the queue
  */
-public class LinkedQueue<T>
-{
+public class LinkedQueue<T> {
     private Node<T> front;
     private Node<T> back;
     private int size;
@@ -20,8 +19,7 @@ public class LinkedQueue<T>
     /**
      * Creates an empty queue.
      */
-    public LinkedQueue()
-    {
+    public LinkedQueue(){
         front = null;
         back = null;
         size = 0;
@@ -33,27 +31,21 @@ public class LinkedQueue<T>
      * @param item the element to add
      * @throws IllegalArgumentException if item is null
      */
-    public void enqueue(T item)
-    {
-        if (item == null)
-        {
+    public void enqueue(T item){
+        if (item == null){
             throw new IllegalArgumentException(
                 "Cannot add null to the queue.");
         }
 
         Node<T> newNode = new Node<T>(item);
-
-        if (isEmpty())
-        {
+        if (isEmpty()){
             front = newNode;
             back = newNode;
         }
-        else
-        {
+        else {
             back.setNext(newNode);
             back = newNode;
         }
-
         size++;
     }
 
@@ -64,22 +56,16 @@ public class LinkedQueue<T>
      * @param item the element to add
      * @throws IllegalArgumentException if item is null
      */
-    public void enqueueFront(T item)
-    {
-        if (item == null)
-        {
+    public void enqueueFront(T item){
+        if (item == null){
             throw new IllegalArgumentException(
                 "Cannot add null to the queue.");
         }
-
         Node<T> newNode = new Node<T>(item, front);
         front = newNode;
-
-        if (back == null)
-        {
+        if (back == null){
             back = newNode;
         }
-
         size++;
     }
 
@@ -89,23 +75,17 @@ public class LinkedQueue<T>
      * @return the element at the front
      * @throws NoSuchElementException if the queue is empty
      */
-    public T dequeue()
-    {
-        if (isEmpty())
-        {
+    public T dequeue(){
+        if (isEmpty()){
             throw new NoSuchElementException(
                 "The queue is empty.");
         }
-
         T removedItem = front.getData();
         front = front.getNext();
         size--;
-
-        if (front == null)
-        {
+        if (front == null){
             back = null;
         }
-
         return removedItem;
     }
 
@@ -115,14 +95,10 @@ public class LinkedQueue<T>
      * @return the element at the front
      * @throws NoSuchElementException if the queue is empty
      */
-    public T peek()
-    {
-        if (isEmpty())
-        {
-            throw new NoSuchElementException(
-                "The queue is empty.");
+    public T peek(){
+        if (isEmpty()){
+            throw new NoSuchElementException("The queue is empty.");
         }
-
         return front.getData();
     }
 
@@ -133,40 +109,29 @@ public class LinkedQueue<T>
      * @param item the element to remove
      * @return true if the element was removed, false otherwise
      */
-    public boolean remove(T item)
-    {
-        if (item == null || isEmpty())
-        {
+    public boolean remove(T item){
+        if (item == null || isEmpty()){
             return false;
         }
 
-        if (front.getData().equals(item))
-        {
+        if (front.getData().equals(item)){
             dequeue();
             return true;
         }
 
         Node<T> current = front;
-
-        while (current.getNext() != null)
-        {
-            if (current.getNext().getData().equals(item))
-            {
+        while (current.getNext() != null){
+            if (current.getNext().getData().equals(item)){
                 Node<T> removedNode = current.getNext();
                 current.setNext(removedNode.getNext());
-
-                if (removedNode == back)
-                {
+                if (removedNode == back){
                     back = current;
                 }
-
                 size--;
                 return true;
             }
-
             current = current.getNext();
         }
-
         return false;
     }
 
@@ -175,8 +140,7 @@ public class LinkedQueue<T>
      *
      * @return true if the queue contains no elements
      */
-    public boolean isEmpty()
-    {
+    public boolean isEmpty(){
         return size == 0;
     }
 
@@ -185,16 +149,14 @@ public class LinkedQueue<T>
      *
      * @return the queue size
      */
-    public int getSize()
-    {
+    public int getSize(){
         return size;
     }
 
     /**
      * Removes every element from the queue.
      */
-    public void clear()
-    {
+    public void clear(){
         front = null;
         back = null;
         size = 0;
@@ -206,17 +168,13 @@ public class LinkedQueue<T>
      *
      * @return an array containing the queue elements
      */
-    public Object[] toArray()
-    {
+    public Object[] toArray(){
         Object[] items = new Object[size];
         Node<T> current = front;
-
-        for (int i = 0; i < size; i++)
-        {
+        for (int i = 0; i < size; i++){
             items[i] = current.getData();
             current = current.getNext();
         }
-
         return items;
     }
 }
