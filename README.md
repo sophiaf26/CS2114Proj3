@@ -12,15 +12,13 @@ Thin view displays the menu, accepts user input, and displays waiting, in-progre
 3. then click **Run As → Java Application**.
 4. The Brew Queue menu will appear in the console.
 5. Enter a menu choice to add, start, complete, or display orders.
-6. Enter `0` to exit the program.
-
-The controller connects the view and model. The view handles user input and output, while the model manages the orders and queues. This keeps the user interface separate from the program's main logic.
+6. `0` to exit the program.
 
 ## Reflection
 
 ### What Changed from Our Specification?
 
-In our original specification we wanted a coffee shop order system using a queue to organize customer orders. As we developed the project, we expanded the order information and added a three-stage order process.
+In our original specification we wanted a coffee shop order system using a queue to organize customer orders. As we developed the project, we wanted the order information and added a three-stage order process.
 
 The main changes include:
 
@@ -46,7 +44,7 @@ During development, we figured out how to implement a generic queue using nodes,
 
 We also worked out how the controller could communicate with the model and view without placing business logic in the view.
 
-Some features we will hold of on for the next prototype, including requeuing and canceling orders, wait-time estimates, and additional order-management options.
+Some features we will work on for prototype 2 are, requeuing and canceling orders, wait-time estimates, and additional order-management options.
 
 ### What Doesn't Work Yet?
 
@@ -105,7 +103,7 @@ The skip-and-requeue feature will require tests for:
 - Attempting to requeue an order that is not currently in progress.
 - Confirming that the queue and order collections remain correct after an unsuccessful attempt.
 
-Additional tests will be added for any stretch goals that are implemented.
+We would also need new test for these stretch goals 
 
 ### Team Responsibilities
 
@@ -117,8 +115,6 @@ Additional tests will be added for any stretch goals that are implemented.
 | Sophia | Maintain `BrewQueueView`; add the new menu option, input prompts, and output messages. |
 
 ## Attribution
-
-The following table identifies the primary contributions to each class and test file.
 
 | File | Team member | Contribution |
 |---|---|---|
