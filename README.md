@@ -138,6 +138,7 @@ The following table identifies the primary contributions to each class and test 
 | `BrewQueueView.java` | Sophia | Wrote |
 | `BrewQueueController.java` | Rudra | Wrote |
 | `BrewQueueControllerTest.java` | Rudra | Wrote and tested |
+| `Readme` | Rudra | Wrote |
 
 ### GenAI Note
 
