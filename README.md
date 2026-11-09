@@ -66,14 +66,7 @@ We will work on these following the next prototype and then the final.
 
 ### What Is Left to Finish the MVP?
 
-Our remaining work will be completed in this order:
-
-1. Confirm that all classes work together correctly.
-2. Run the full set of queue, model, and controller tests.
-3. Test the complete MVP path through the console interface.
-4. Test the bad-input cases we talked about.
-5. Fix any integration issues we find.
-6. Update the README and verify that the program runs from the submitted project.
+We want to make a drink menu instead of having to manually add drinks, and each drink from the menu will already have a predetermined amount of time it is required to make rather than inputting it manually 
 
 ### New Feature for Deliverable 4: Skip and Requeue
 
