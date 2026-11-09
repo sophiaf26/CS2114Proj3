@@ -1,8 +1,9 @@
 # CS2114Proj3
 # Brew Queue
+
 ## Running the Thin View
 
-The thin view provides a basic console interface that allows users to interact with Brew Queue through the controller. It displays the menu, accepts user input, and displays waiting, in-progress, and completed orders.
+Thin view displays the menu, accepts user input, and displays waiting, in-progress, and completed orders.
 
 ### How to Run
 
