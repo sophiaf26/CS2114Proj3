@@ -8,9 +8,9 @@ Thin view displays the menu, accepts user input, and displays waiting, in-progre
 ### How to Run
 
 1. Open the Brew Queue project in Eclipse.
-2. Locate `BrewQueueController.java`.
-3. Right-click the file and select **Run As → Java Application**.
-4. The Brew Queue menu will appear in the Eclipse console.
+2. Go to `BrewQueueController.java`.
+3. then click **Run As → Java Application**.
+4. The Brew Queue menu will appear in the console.
 5. Enter a menu choice to add, start, complete, or display orders.
 6. Enter `0` to exit the program.
 
