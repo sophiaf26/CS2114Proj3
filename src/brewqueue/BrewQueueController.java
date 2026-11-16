@@ -15,13 +15,15 @@ public class BrewQueueController {
     /**
      * Creates a controller using the given model and view.
      *
-     * @param model the order model
-     * @param view the console view
-     * @throws IllegalArgumentException if either argument is null
+     * @param model
+     *            the order model
+     * @param view
+     *            the console view
+     * @throws IllegalArgumentException
+     *             if either argument is null
      */
-    public BrewQueueController(BrewQueueModel model, BrewQueueView view)
-    {
-        if (model == null || view == null){
+    public BrewQueueController(BrewQueueModel model, BrewQueueView view) {
+        if (model == null || view == null) {
             throw new IllegalArgumentException(
                 "Model and view cannot be null.");
         }
@@ -29,34 +31,39 @@ public class BrewQueueController {
         this.view = view;
     }
 
+
     /**
      * Runs the main menu until the user chooses to exit.
      */
-    public void run(){
+    public void run() {
         boolean running = true;
 
-        while (running){
+        while (running) {
             view.displayMenu();
             int choice = view.readInt("Enter your choice: ");
 
-            if (choice == 1){
+            if (choice == 1) {
                 handleAddOrder();
                 refreshDisplays();
             }
-            else if (choice == 2){
+            else if (choice == 2) {
                 handleCompleteOrder();
                 refreshDisplays();
             }
-            else if (choice == 3){
+            else if (choice == 3) {
                 displayWaitingOrders();
             }
-            else if (choice == 4){
+            else if (choice == 4) {
                 displayInProgressOrders();
             }
-            else if (choice == 5){
+            else if (choice == 5) {
                 displayCompletedOrders();
             }
-            else if (choice == 0){
+            else if (choice == 7) {
+                handleRequeueOrder();
+                refreshDisplays();
+            }
+            else if (choice == 0) {
                 view.displayMessage("Exiting Brew Queue.");
                 running = false;
             }
@@ -66,13 +73,12 @@ public class BrewQueueController {
         }
     }
 
+
     /**
      * Collects information and adds a new order using the drink menu.
      */
-    public void handleAddOrder()
-    {
-        String customerName =
-            view.readNonBlankString("Enter customer name: ");
+    public void handleAddOrder() {
+        String customerName = view.readNonBlankString("Enter customer name: ");
 
         int drinkChoice = view.readDrinkChoice();
 
@@ -82,73 +88,71 @@ public class BrewQueueController {
         int quantity = view.readInt("Enter quantity: ");
 
         try {
-            Order order = model.addOrder(
-                customerName,
-                drink,
-                quantity,
-                minutesPerDrink,
-                false);
+            Order order = model.addOrder(customerName, drink, quantity,
+                minutesPerDrink, false);
 
-            view.displayMessage("Order #" + order.getOrderId()
-                + " for " + quantity + " " + drink
-                + " was added.");
+            view.displayMessage("Order #" + order.getOrderId() + " for "
+                + quantity + " " + drink + " was added.");
 
             boolean assigned = false;
 
-            for (Order active : model.getInProgressOrders()){
-                if (active.getOrderId() == order.getOrderId()){
+            for (Order active : model.getInProgressOrders()) {
+                if (active.getOrderId() == order.getOrderId()) {
                     assigned = true;
                 }
             }
 
-            if (assigned){
-                view.displayMessage("A barista has started preparing this order.");
+            if (assigned) {
+                view.displayMessage(
+                    "A barista has started preparing this order.");
             }
             else {
-                view.displayMessage("All baristas are busy. Order added to waiting queue.");
+                view.displayMessage(
+                    "All baristas are busy. Order added to waiting queue.");
             }
         }
-        catch (IllegalArgumentException e){
+        catch (IllegalArgumentException e) {
             view.displayMessage("Could not add order: " + e.getMessage());
         }
-        catch (IllegalStateException e){
+        catch (IllegalStateException e) {
             view.displayMessage("Could not add order: " + e.getMessage());
         }
     }
 
+
     /**
      * Returns the drink name associated with a menu selection.
      *
-     * @param choice selected menu number
+     * @param choice
+     *            selected menu number
      * @return drink name
      */
-    private String getDrinkName(int choice)
-    {
-        if (choice == 1){
+    private String getDrinkName(int choice) {
+        if (choice == 1) {
             return "Coffee";
         }
-        else if (choice == 2){
+        else if (choice == 2) {
             return "Tea";
         }
-        else if (choice == 3){
+        else if (choice == 3) {
             return "Iced Coffee";
         }
-        else if (choice == 4){
+        else if (choice == 4) {
             return "Latte";
         }
-        else if (choice == 5){
+        else if (choice == 5) {
             return "Espresso";
         }
-        else if (choice == 6){
+        else if (choice == 6) {
             return "Cappuccino";
         }
-        else if (choice == 7){
+        else if (choice == 7) {
             return "Americano";
         }
-        else if (choice == 8){
+        else if (choice == 8) {
             return "Matcha";
         }
-        else if (choice == 9){
+        else if (choice == 9) {
             return "Cold Brew";
         }
         else {
@@ -156,24 +160,25 @@ public class BrewQueueController {
         }
     }
 
+
     /**
      * Returns the preparation time associated with a menu selection.
      *
-     * @param choice selected menu number
+     * @param choice
+     *            selected menu number
      * @return preparation time per drink
      */
-    private double getDrinkTime(int choice)
-    {
-        if (choice == 1 || choice == 2 || choice == 3 || choice == 9){
+    private double getDrinkTime(int choice) {
+        if (choice == 1 || choice == 2 || choice == 3 || choice == 9) {
             return 1.0;
         }
-        else if (choice == 4 || choice == 10){
+        else if (choice == 4 || choice == 10) {
             return 2.0;
         }
-        else if (choice == 5 || choice == 7){
+        else if (choice == 5 || choice == 7) {
             return 1.5;
         }
-        else if (choice == 6){
+        else if (choice == 6) {
             return 2.5;
         }
         else {
@@ -181,11 +186,12 @@ public class BrewQueueController {
         }
     }
 
+
     /**
      * Completes an order that is currently in progress.
      * The model automatically assigns the next waiting order.
      */
-    public void handleCompleteOrder(){
+    public void handleCompleteOrder() {
         int orderId = view.readInt("Enter the order ID to complete: ");
 
         try {
@@ -196,52 +202,76 @@ public class BrewQueueController {
             view.displayMessage(
                 "Any waiting orders have been assigned to available baristas.");
         }
-        catch (IllegalArgumentException e){
+        catch (IllegalArgumentException e) {
             view.displayMessage("Could not complete order: " + e.getMessage());
         }
     }
 
+
     /**
      * Displays all waiting orders.
      */
-    public void displayWaitingOrders(){
+    public void displayWaitingOrders() {
         view.displayWaitingOrders(model.getWaitingOrders());
     }
+
 
     /**
      * Displays all orders currently being prepared.
      */
-    public void displayInProgressOrders(){
+    public void displayInProgressOrders() {
         view.displayInProgressOrders(model.getInProgressOrders());
     }
+
 
     /**
      * Displays all completed orders.
      */
-    public void displayCompletedOrders(){
+    public void displayCompletedOrders() {
         view.displayCompletedOrders(model.getCompletedOrders());
     }
+
 
     /**
      * Refreshes the order displays after an action.
      */
-    private void refreshDisplays(){
+    private void refreshDisplays() {
         displayWaitingOrders();
         displayInProgressOrders();
         displayCompletedOrders();
     }
 
+
+    /**
+     * Skips an in-progress order and moves it back to the waiting line.
+     */
+    public void handleRequeueOrder() {
+        int orderId = view.readInt("Enter the order ID to requeue: ");
+
+        try {
+            Order order = model.requeueOrder(orderId);
+
+            int lineLength = model.getWaitingOrderCount();
+
+            view.displayRequeued(order, lineLength, lineLength);
+        }
+        catch (IllegalArgumentException e) {
+            view.displayMessage("Could not requeue order: " + e.getMessage());
+        }
+    }
+
+
     /**
      * Creates the model, view, and controller and starts the program.
      *
-     * @param args command-line arguments
+     * @param args
+     *            command-line arguments
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         BrewQueueModel model = new BrewQueueModel(3);
         BrewQueueView view = new BrewQueueView();
 
-        BrewQueueController controller =
-            new BrewQueueController(model, view);
+        BrewQueueController controller = new BrewQueueController(model, view);
         controller.run();
     }
 }
