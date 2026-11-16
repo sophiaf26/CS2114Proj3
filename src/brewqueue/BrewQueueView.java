@@ -24,21 +24,19 @@ public class BrewQueueView {
     }
 
     /**
-     * Displays the available actions and the exit option.
-     */
-    public void displayMenu()
-    {
+    * Displays the available actions and the exit option.
+    */
+    public void displayMenu() {
         System.out.println();
         System.out.println("===== Brew Queue =====");
         System.out.println("1. Add order");
-        System.out.println("2. Start next order");
-        System.out.println("3. Complete order");
-        System.out.println("4. Show waiting orders");
-        System.out.println("5. Show in-progress orders");
-        System.out.println("6. Show completed orders");
-        System.out.println("7. Requeue an in-progress order (back of line)");
+        System.out.println("2. Complete order");
+        System.out.println("3. Show waiting orders");
+        System.out.println("4. Show in-progress orders");
+        System.out.println("5. Show completed orders");
         System.out.println("0. Exit");
     }
+
 
     /**
      * Displays a confirmation, error, or instructional message.
@@ -298,4 +296,42 @@ public class BrewQueueView {
     {
         return Duration.between(from, to).toMillis() / 60000.0;
     }
+
+    
+    /**
+    * Displays the available drinks and their preparation times.
+    */
+    public void displayDrinkMenu() {
+        System.out.println();
+        System.out.println("--- Drink Menu ---");
+        System.out.println("1. Coffee - 1 min");
+        System.out.println("2. Tea - 1 min");
+        System.out.println("3. Iced Coffee - 1 min");
+        System.out.println("4. Latte - 2 min");
+        System.out.println("5. Espresso - 1.5 min");
+        System.out.println("6. Cappuccino - 2.5 min");
+        System.out.println("7. Americano - 1.5 min");
+        System.out.println("8. Matcha - 3 min");
+        System.out.println("9. Cold Brew - 1 min");
+        System.out.println("10. Macchiato - 2 min");
+    }
+
+    /**
+    * Collects a valid drink selection.
+    *
+    * @return the selected menu number
+    */
+    public int readDrinkChoice() {
+        displayDrinkMenu();
+
+        while (true) {
+            int choice = readInt("Select a drink (1-10): ");
+
+            if (choice >= 1 && choice <= 10) {
+                return choice;
+            }
+            System.out.println("Please select a number from 1-10.");
+    }
+}
+
 }
