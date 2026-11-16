@@ -34,7 +34,7 @@ public class BrewQueueView {
         System.out.println("3. Show waiting orders");
         System.out.println("4. Show in-progress orders");
         System.out.println("5. Show completed orders");
-        System.out.println("7. Requeue");
+        System.out.println("6. Requeue");
         System.out.println("0. Exit");
     }
 

@@ -108,7 +108,7 @@ public class BrewQueueViewTest extends TestCase {
     public void testMenuListsRequeue()
     {
         viewWithInput("").displayMenu();
-        assertTrue(output().contains("7. Requeue"));
+        assertTrue(output().contains("6. Requeue"));
     }
 
     public void testDisplayRequeued()
