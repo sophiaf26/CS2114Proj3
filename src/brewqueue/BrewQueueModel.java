@@ -105,6 +105,7 @@ public class BrewQueueModel
         }
 
         nextOrderId++;
+        startAvailableOrders();
         return order;
     }
 
@@ -167,6 +168,7 @@ public class BrewQueueModel
                 order.markCompleted();
                 inProgressOrders.remove(i);
                 completedOrders.add(order);
+                startAvailableOrders();
 
                 return order;
             }
@@ -415,6 +417,7 @@ public class BrewQueueModel
         }
 
         activeBaristas = count;
+        startAvailableOrders();
     }
 
     /**
@@ -428,5 +431,16 @@ public class BrewQueueModel
 
         return duration.getSeconds() / 60.0
             + duration.getNano() / 60000000000.0;
+    }
+
+     /**
+     * Automatically starts waiting orders whenever baristas are available.
+     * Continues until all baristas are busy or no orders are waiting.
+     */
+    private void startAvailableOrders() {
+        while (!waitingOrders.isEmpty()
+            && inProgressOrders.size() < activeBaristas) {
+            startNextOrder();
+        }
     }
 }
