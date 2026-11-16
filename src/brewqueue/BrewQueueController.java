@@ -194,7 +194,7 @@ public class BrewQueueController {
                 + " was completed.");
 
             view.displayMessage(
-                "Available barista capacity has been filled automatically.");
+                "Any waiting orders have been assigned to available baristas.");
         }
         catch (IllegalArgumentException e){
             view.displayMessage("Could not complete order: " + e.getMessage());
