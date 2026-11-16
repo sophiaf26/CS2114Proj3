@@ -1,30 +1,30 @@
 package brewqueue;
+
 import java.time.Duration;
 import java.util.NoSuchElementException;
 import student.TestCase;
 
 /**
  * Tests the mdoel without view or controller
+ * 
  * @author Will Fleming
  * @version 2026.11.07
  */
-public class BrewQueueModelTest extends TestCase
-{
+public class BrewQueueModelTest extends TestCase {
     private BrewQueueModel model;
 
     /**
      * Creates a fresh model for every test.
      */
-    public void setUp()
-    {
+    public void setUp() {
         model = new BrewQueueModel(2);
     }
+
 
     /**
      * Checks the initial state.
      */
-    public void testInitialState()
-    {
+    public void testInitialState() {
         assertTrue(model.isEmpty());
         assertEquals(2, model.getActiveBaristas());
         assertEquals(0, model.getWaitingOrderCount());
@@ -36,36 +36,30 @@ public class BrewQueueModelTest extends TestCase
         assertEquals(0.0, model.getAverageWaitMinutes(), 0.0);
     }
 
+
     /**
      * Checks constructor validation.
      */
-    public void testConstructorValidation()
-    {
-        assertEquals(
-            0,
-            new BrewQueueModel(0).getActiveBaristas());
+    public void testConstructorValidation() {
+        assertEquals(0, new BrewQueueModel(0).getActiveBaristas());
 
-        try
-        {
+        try {
             new BrewQueueModel(-1);
             fail("Negative staffing must be rejected.");
         }
-        catch (IllegalArgumentException exception)
-        {
+        catch (IllegalArgumentException exception) {
             // Expected.
         }
     }
 
+
     /**
      * Checks FIFO order, trimmed input, and automatic IDs.
      */
-    public void testAddOrder()
-    {
-        Order first = model.addOrder(
-            " Will ", " Latte ", 2, 3, false);
+    public void testAddOrder() {
+        Order first = model.addOrder(" Will ", " Latte ", 2, 3, false);
 
-        Order second = model.addOrder(
-            "Sophia", "Coffee", 1, 2, false);
+        Order second = model.addOrder("Sophia", "Coffee", 1, 2, false);
 
         assertEquals(1, first.getOrderId());
         assertEquals(2, second.getOrderId());
@@ -82,104 +76,73 @@ public class BrewQueueModelTest extends TestCase
         assertNull(first.getCompletedAt());
     }
 
+
     /**
      * Invalid input must not add an order or consume an ID.
      */
-    public void testInvalidOrderInputs()
-    {
-        String[][] strings = {
-            {null, "Latte"},
-            {"", "Latte"},
-            {"   ", "Latte"},
-            {"Will", null},
-            {"Will", ""},
-            {"Will", "   "}
-        };
+    public void testInvalidOrderInputs() {
+        String[][] strings = { { null, "Latte" }, { "", "Latte" }, { "   ",
+            "Latte" }, { "Will", null }, { "Will", "" }, { "Will", "   " } };
 
-        for (String[] pair : strings)
-        {
-            try
-            {
-                model.addOrder(
-                    pair[0], pair[1], 1, 2, false);
+        for (String[] pair : strings) {
+            try {
+                model.addOrder(pair[0], pair[1], 1, 2, false);
 
                 fail("Blank or null input must be rejected.");
             }
-            catch (IllegalArgumentException exception)
-            {
+            catch (IllegalArgumentException exception) {
                 assertTrue(model.isEmpty());
             }
         }
 
-        double[] times = {
-            0,
-            -1,
-            Double.NaN,
-            Double.POSITIVE_INFINITY,
-            Double.NEGATIVE_INFINITY
-        };
+        double[] times = { 0, -1, Double.NaN, Double.POSITIVE_INFINITY,
+            Double.NEGATIVE_INFINITY };
 
-        for (double time : times)
-        {
-            try
-            {
-                model.addOrder(
-                    "Will", "Latte", 1, time, false);
+        for (double time : times) {
+            try {
+                model.addOrder("Will", "Latte", 1, time, false);
 
                 fail("Invalid preparation time must be rejected.");
             }
-            catch (IllegalArgumentException exception)
-            {
+            catch (IllegalArgumentException exception) {
                 assertTrue(model.isEmpty());
             }
         }
 
-        for (int quantity : new int[] {0, -1})
-        {
-            try
-            {
-                model.addOrder(
-                    "Will", "Latte", quantity, 2, false);
+        for (int quantity : new int[] { 0, -1 }) {
+            try {
+                model.addOrder("Will", "Latte", quantity, 2, false);
 
                 fail("Invalid quantity must be rejected.");
             }
-            catch (IllegalArgumentException exception)
-            {
+            catch (IllegalArgumentException exception) {
                 assertTrue(model.isEmpty());
             }
         }
 
-        try
-        {
-            model.addOrder(
-                "Will", "Latte", 2, Double.MAX_VALUE, false);
+        try {
+            model.addOrder("Will", "Latte", 2, Double.MAX_VALUE, false);
 
             fail("An overflowing total time must be rejected.");
         }
-        catch (IllegalArgumentException exception)
-        {
+        catch (IllegalArgumentException exception) {
             assertTrue(model.isEmpty());
         }
 
-        assertEquals(
-            1,
-            model.addOrder(
-                "Will", "Latte", 1, 2, false).getOrderId());
+        assertEquals(1, model.addOrder("Will", "Latte", 1, 2, false)
+            .getOrderId());
     }
+
 
     /**
      * New reward orders go ahead of all waiting orders.
      */
-    public void testRewardPriority()
-    {
-        Order regular = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testRewardPriority() {
+        Order regular = model.addOrder("A", "Coffee", 1, 4, false);
 
-        Order reward1 = model.addOrder(
-            "B", "Coffee", 1, 4, true);
+        Order reward1 = model.addOrder("B", "Coffee", 1, 4, true);
 
-        Order reward2 = model.addOrder(
-            "C", "Coffee", 1, 4, true);
+        Order reward2 = model.addOrder("C", "Coffee", 1, 4, true);
 
         assertTrue(reward2.isRewardMember());
 
@@ -190,13 +153,12 @@ public class BrewQueueModelTest extends TestCase
         assertSame(regular, waiting[2]);
     }
 
+
     /**
      * Peeking does not remove an order; starting does.
      */
-    public void testPeekAndStart()
-    {
-        Order order = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testPeekAndStart() {
+        Order order = model.addOrder("A", "Coffee", 1, 4, false);
 
         assertSame(order, model.getNextOrder());
         assertSame(order, model.getNextOrder());
@@ -209,56 +171,48 @@ public class BrewQueueModelTest extends TestCase
         assertNotNull(order.getStartedAt());
     }
 
+
     /**
      * Checks operations on an empty queue.
      */
-    public void testEmptyOperations()
-    {
-        try
-        {
+    public void testEmptyOperations() {
+        try {
             model.getNextOrder();
             fail("An empty queue has no next order.");
         }
-        catch (NoSuchElementException exception)
-        {
+        catch (NoSuchElementException exception) {
             assertTrue(model.isEmpty());
         }
 
-        try
-        {
+        try {
             model.startNextOrder();
             fail("An empty queue cannot start an order.");
         }
-        catch (NoSuchElementException exception)
-        {
+        catch (NoSuchElementException exception) {
             assertEquals(0, model.getInProgressOrderCount());
         }
 
         assertFalse(model.cancelOrder(1));
     }
 
+
     /**
      * Busy baristas cannot start extra orders.
      */
-    public void testStaffCapacity()
-    {
+    public void testStaffCapacity() {
         model.setActiveBaristas(1);
 
-        Order first = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+        Order first = model.addOrder("A", "Coffee", 1, 4, false);
 
-        Order second = model.addOrder(
-            "B", "Coffee", 1, 4, false);
+        Order second = model.addOrder("B", "Coffee", 1, 4, false);
 
         model.startNextOrder();
 
-        try
-        {
+        try {
             model.startNextOrder();
             fail("One barista cannot start two orders.");
         }
-        catch (IllegalStateException exception)
-        {
+        catch (IllegalStateException exception) {
             assertSame(second, model.getNextOrder());
             assertNull(second.getStartedAt());
             assertEquals(1, model.getInProgressOrderCount());
@@ -269,16 +223,14 @@ public class BrewQueueModelTest extends TestCase
         assertSame(second, model.startNextOrder());
     }
 
+
     /**
      * Orders may finish in a different order from when they started.
      */
-    public void testCompleteOutOfOrder()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testCompleteOutOfOrder() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 2, false);
+        Order b = model.addOrder("B", "Coffee", 1, 2, false);
 
         model.startNextOrder();
         model.startNextOrder();
@@ -295,23 +247,19 @@ public class BrewQueueModelTest extends TestCase
         assertEquals(0, model.getInProgressOrderCount());
     }
 
+
     /**
      * Only in-progress orders can be completed.
      */
-    public void testInvalidCompletion()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testInvalidCompletion() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
-        for (int id : new int[] {-1, 999, a.getOrderId()})
-        {
-            try
-            {
+        for (int id : new int[] { -1, 999, a.getOrderId() }) {
+            try {
                 model.completeOrder(id);
                 fail("Only in-progress orders can complete.");
             }
-            catch (IllegalArgumentException exception)
-            {
+            catch (IllegalArgumentException exception) {
                 assertEquals(0, model.getCompletedCount());
                 assertEquals(1, model.getWaitingOrderCount());
             }
@@ -320,33 +268,27 @@ public class BrewQueueModelTest extends TestCase
         model.startNextOrder();
         model.completeOrder(a.getOrderId());
 
-        try
-        {
+        try {
             model.completeOrder(a.getOrderId());
             fail("An order cannot complete twice.");
         }
-        catch (IllegalArgumentException exception)
-        {
+        catch (IllegalArgumentException exception) {
             assertEquals(1, model.getCompletedCount());
         }
     }
 
+
     /**
      * Cancellation preserves the remaining order.
      */
-    public void testCancelPreservesOrder()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testCancelPreservesOrder() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 4, false);
+        Order b = model.addOrder("B", "Coffee", 1, 4, false);
 
-        Order c = model.addOrder(
-            "C", "Coffee", 1, 4, false);
+        Order c = model.addOrder("C", "Coffee", 1, 4, false);
 
-        Order d = model.addOrder(
-            "D", "Coffee", 1, 4, false);
+        Order d = model.addOrder("D", "Coffee", 1, 4, false);
 
         assertTrue(model.cancelOrder(b.getOrderId()));
         assertSame(a, model.getWaitingOrders()[0]);
@@ -360,20 +302,18 @@ public class BrewQueueModelTest extends TestCase
         assertTrue(model.cancelOrder(c.getOrderId()));
         assertTrue(model.isEmpty());
 
-        Order next = model.addOrder(
-            "E", "Coffee", 1, 4, false);
+        Order next = model.addOrder("E", "Coffee", 1, 4, false);
 
         assertEquals(5, next.getOrderId());
         assertSame(next, model.getNextOrder());
     }
 
+
     /**
      * In-progress and completed orders cannot be canceled.
      */
-    public void testInvalidCancellation()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testInvalidCancellation() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
         assertFalse(model.cancelOrder(-1));
 
@@ -388,13 +328,12 @@ public class BrewQueueModelTest extends TestCase
         assertEquals(1, model.getCompletedCount());
     }
 
+
     /**
      * Replacing array entries does not change the stored collections.
      */
-    public void testReturnedArraysAreIndependent()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testReturnedArraysAreIndependent() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
         model.getWaitingOrders()[0] = null;
         assertSame(a, model.getNextOrder());
@@ -410,210 +349,162 @@ public class BrewQueueModelTest extends TestCase
         assertSame(a, model.getCompletedOrders()[0]);
     }
 
+
     /**
      * One barista must finish all orders ahead.
      */
-    public void testEstimateOneBarista()
-    {
+    public void testEstimateOneBarista() {
         model.setActiveBaristas(1);
 
-        Order a = model.addOrder(
-            "A", "Coffee", 2, 3, false);
+        Order a = model.addOrder("A", "Coffee", 2, 3, false);
 
         model.addOrder("B", "Coffee", 1, 4, false);
 
-        Order c = model.addOrder(
-            "C", "Coffee", 1, 8, false);
+        Order c = model.addOrder("C", "Coffee", 1, 8, false);
 
-        assertEquals(
-            0.0, model.estimateWaitMinutes(a.getOrderId()), 0.0);
+        assertEquals(0.0, model.estimateWaitMinutes(a.getOrderId()), 0.0);
 
-        assertEquals(
-            10.0, model.estimateWaitMinutes(c.getOrderId()), 0.0);
+        assertEquals(10.0, model.estimateWaitMinutes(c.getOrderId()), 0.0);
 
         assertEquals(3, model.getWaitingOrderCount());
         assertEquals(0, model.getInProgressOrderCount());
         assertNull(a.getStartedAt());
     }
 
+
     /**
      * The third four-minute order waits four minutes with two baristas.
      */
-    public void testEstimateTwoBaristas()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testEstimateTwoBaristas() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 4, false);
+        Order b = model.addOrder("B", "Coffee", 1, 4, false);
 
-        Order c = model.addOrder(
-            "C", "Coffee", 1, 4, false);
+        Order c = model.addOrder("C", "Coffee", 1, 4, false);
 
-        assertEquals(
-            0.0, model.estimateWaitMinutes(a.getOrderId()), 0.0);
+        assertEquals(0.0, model.estimateWaitMinutes(a.getOrderId()), 0.0);
 
-        assertEquals(
-            0.0, model.estimateWaitMinutes(b.getOrderId()), 0.0);
+        assertEquals(0.0, model.estimateWaitMinutes(b.getOrderId()), 0.0);
 
-        assertEquals(
-            4.0, model.estimateWaitMinutes(c.getOrderId()), 0.0);
+        assertEquals(4.0, model.estimateWaitMinutes(c.getOrderId()), 0.0);
     }
+
 
     /**
      * Checks different preparation times and reward priority.
      */
-    public void testEstimateUnequalDurations()
-    {
+    public void testEstimateUnequalDurations() {
         model.addOrder("A", "Coffee", 1, 10, false);
         model.addOrder("B", "Coffee", 1, 2, false);
         model.addOrder("C", "Coffee", 1, 3, false);
 
-        Order target = model.addOrder(
-            "D", "Coffee", 1, 4, false);
+        Order target = model.addOrder("D", "Coffee", 1, 4, false);
 
-        assertEquals(
-            5.0,
-            model.estimateWaitMinutes(target.getOrderId()),
-            0.0);
+        assertEquals(5.0, model.estimateWaitMinutes(target.getOrderId()), 0.0);
 
-        Order reward = model.addOrder(
-            "R", "Coffee", 1, 1, true);
+        Order reward = model.addOrder("R", "Coffee", 1, 1, true);
 
-        assertEquals(
-            0.0,
-            model.estimateWaitMinutes(reward.getOrderId()),
-            0.0);
+        assertEquals(0.0, model.estimateWaitMinutes(reward.getOrderId()), 0.0);
 
-        assertEquals(
-            6.0,
-            model.estimateWaitMinutes(target.getOrderId()),
-            0.0);
+        assertEquals(6.0, model.estimateWaitMinutes(target.getOrderId()), 0.0);
     }
+
 
     /**
      * Checks estimates when both baristas are busy.
      */
-    public void testEstimateBusyBaristas()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 1000, false);
+    public void testEstimateBusyBaristas() {
+        Order a = model.addOrder("A", "Coffee", 1, 1000, false);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 2000, false);
+        Order b = model.addOrder("B", "Coffee", 1, 2000, false);
 
         model.startNextOrder();
         model.startNextOrder();
 
         model.addOrder("C", "Coffee", 1, 300, false);
 
-        Order target = model.addOrder(
-            "D", "Coffee", 1, 10, false);
+        Order target = model.addOrder("D", "Coffee", 1, 10, false);
 
-        double wait =
-            model.estimateWaitMinutes(target.getOrderId());
+        double wait = model.estimateWaitMinutes(target.getOrderId());
 
-        double elapsedA = Duration.between(
-            a.getStartedAt(),
+        double elapsedA = Duration.between(a.getStartedAt(),
             java.time.LocalDateTime.now()).toMillis() / 60000.0;
 
-        assertEquals(
-            Math.max(0, 1000 - elapsedA) + 300,
-            wait,
-            0.05);
+        assertEquals(Math.max(0, 1000 - elapsedA) + 300, wait, 0.05);
 
         assertEquals(2, model.getInProgressOrderCount());
         assertNull(b.getCompletedAt());
     }
 
+
     /**
      * Checks invalid IDs and zero staffing.
      */
-    public void testEstimateInvalidAndNoStaff()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testEstimateInvalidAndNoStaff() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
         model.setActiveBaristas(0);
 
-        assertEquals(
-            -1.0,
-            model.estimateWaitMinutes(a.getOrderId()),
-            0.0);
+        assertEquals(-1.0, model.estimateWaitMinutes(a.getOrderId()), 0.0);
 
-        try
-        {
+        try {
             model.estimateWaitMinutes(999);
             fail("A missing ID must be rejected even without staff.");
         }
-        catch (IllegalArgumentException exception)
-        {
+        catch (IllegalArgumentException exception) {
             assertEquals(1, model.getWaitingOrderCount());
         }
 
-        try
-        {
+        try {
             model.startNextOrder();
             fail("Zero staff cannot start an order.");
         }
-        catch (IllegalStateException exception)
-        {
+        catch (IllegalStateException exception) {
             assertNull(a.getStartedAt());
         }
 
         model.setActiveBaristas(1);
         model.startNextOrder();
 
-        try
-        {
+        try {
             model.estimateWaitMinutes(a.getOrderId());
             fail("An in-progress order is no longer waiting.");
         }
-        catch (IllegalArgumentException exception)
-        {
+        catch (IllegalArgumentException exception) {
             assertEquals(1, model.getInProgressOrderCount());
         }
     }
 
+
     /**
      * Staff departures preserve existing work.
      */
-    public void testStaffDeparture()
-    {
+    public void testStaffDeparture() {
         model.addOrder("A", "Coffee", 1, 1000, false);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 2000, false);
+        Order b = model.addOrder("B", "Coffee", 1, 2000, false);
 
         Order a = model.startNextOrder();
         model.startNextOrder();
 
-        Order target = model.addOrder(
-            "C", "Coffee", 1, 10, false);
+        Order target = model.addOrder("C", "Coffee", 1, 10, false);
 
         model.setActiveBaristas(1);
 
-        double wait =
-            model.estimateWaitMinutes(target.getOrderId());
+        double wait = model.estimateWaitMinutes(target.getOrderId());
 
-        double elapsed = Duration.between(
-            b.getStartedAt(),
+        double elapsed = Duration.between(b.getStartedAt(),
             java.time.LocalDateTime.now()).toMillis() / 60000.0;
 
-        assertEquals(
-            Math.max(0, 2000 - elapsed),
-            wait,
-            0.05);
+        assertEquals(Math.max(0, 2000 - elapsed), wait, 0.05);
 
         model.completeOrder(a.getOrderId());
 
-        try
-        {
+        try {
             model.startNextOrder();
             fail("Remaining barista is still busy.");
         }
-        catch (IllegalStateException exception)
-        {
+        catch (IllegalStateException exception) {
             assertSame(target, model.getNextOrder());
         }
 
@@ -622,73 +513,91 @@ public class BrewQueueModelTest extends TestCase
         assertSame(target, model.startNextOrder());
     }
 
+
     /**
      * Checks valid and invalid staffing updates.
      */
-    public void testStaffUpdates()
-    {
+    public void testStaffUpdates() {
         model.setActiveBaristas(0);
 
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
         model.setActiveBaristas(3);
 
         assertEquals(3, model.getActiveBaristas());
         assertSame(a, model.startNextOrder());
 
-        try
-        {
+        try {
             model.setActiveBaristas(-2);
             fail("Negative staffing must be rejected.");
         }
-        catch (IllegalArgumentException exception)
-        {
+        catch (IllegalArgumentException exception) {
             assertEquals(3, model.getActiveBaristas());
         }
 
         model.setActiveBaristas(Integer.MAX_VALUE);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 4, false);
+        Order b = model.addOrder("B", "Coffee", 1, 4, false);
 
-        assertEquals(
-            0.0,
-            model.estimateWaitMinutes(b.getOrderId()),
-            0.0);
+        assertEquals(0.0, model.estimateWaitMinutes(b.getOrderId()), 0.0);
     }
+
 
     /**
      * Only completed orders contribute to average wait.
      */
-    public void testAverageWait()
-    {
-        Order a = model.addOrder(
-            "A", "Coffee", 1, 4, false);
+    public void testAverageWait() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
 
-        Order b = model.addOrder(
-            "B", "Coffee", 1, 4, false);
+        Order b = model.addOrder("B", "Coffee", 1, 4, false);
 
         model.startNextOrder();
         model.startNextOrder();
 
-        assertEquals(
-            0.0, model.getAverageWaitMinutes(), 0.0);
+        assertEquals(0.0, model.getAverageWaitMinutes(), 0.0);
 
         model.completeOrder(a.getOrderId());
         model.completeOrder(b.getOrderId());
 
-        double first = Duration.between(
-            a.getPlacedAt(),
-            a.getStartedAt()).toNanos() / 60000000000.0;
+        double first = Duration.between(a.getPlacedAt(), a.getStartedAt())
+            .toNanos() / 60000000000.0;
 
-        double second = Duration.between(
-            b.getPlacedAt(),
-            b.getStartedAt()).toNanos() / 60000000000.0;
+        double second = Duration.between(b.getPlacedAt(), b.getStartedAt())
+            .toNanos() / 60000000000.0;
 
-        assertEquals(
-            (first + second) / 2,
-            model.getAverageWaitMinutes(),
+        assertEquals((first + second) / 2, model.getAverageWaitMinutes(),
             0.00000001);
+    }
+
+
+    /**
+     * Checks that an in-progress order is correctly moved back to waiting.
+     */
+    public void testRequeueOrderValid() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
+        assertEquals(1, model.getInProgressOrderCount());
+
+        Order requeued = model.requeueOrder(a.getOrderId());
+
+        assertSame(a, requeued);
+        assertEquals(0, model.getInProgressOrderCount());
+        assertEquals(1, model.getWaitingOrderCount());
+        assertNull(a.getStartedAt());
+    }
+
+
+    /**
+     * Checks that attempting to requeue a bad ID is rejected.
+     */
+    public void testRequeueOrderInvalidId() {
+        Order a = model.addOrder("A", "Coffee", 1, 4, false);
+
+        try {
+            model.requeueOrder(999);
+            fail("Expected IllegalArgumentException for bad ID.");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(1, model.getInProgressOrderCount());
+        }
     }
 }
