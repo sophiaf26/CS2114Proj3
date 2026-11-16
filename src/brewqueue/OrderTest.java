@@ -170,4 +170,47 @@ public class OrderTest extends TestCase {
     public void testToString() {
         assertEquals("Order #1: Alice (2x Latte)", order.toString());
     }
+
+
+    /**
+     * Tests successful reset of an in-progress order back to waiting.
+     */
+    public void testResetToWaitingValid() {
+        order.markStarted();
+        order.resetToWaiting();
+        assertNull(order.getStartedAt());
+        assertNotNull(order.getPlacedAt());
+    }
+
+
+    /**
+     * Tests that an order cannot be reset if it hasn't started yet.
+     */
+    public void testResetToWaitingBeforeStarted() {
+        Exception thrown = null;
+        try {
+            order.resetToWaiting();
+        }
+        catch (Exception e) {
+            thrown = e;
+        }
+        assertTrue(thrown instanceof IllegalStateException);
+    }
+
+
+    /**
+     * Tests that an order cannot be reset if it is already completed.
+     */
+    public void testResetToWaitingAfterCompleted() {
+        order.markStarted();
+        order.markCompleted();
+        Exception thrown = null;
+        try {
+            order.resetToWaiting();
+        }
+        catch (Exception e) {
+            thrown = e;
+        }
+        assertTrue(thrown instanceof IllegalStateException);
+    }
 }

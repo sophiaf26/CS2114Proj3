@@ -222,4 +222,24 @@ public class Order {
         return String.format("Order #%d: %s (%dx %s)", orderId, customerName,
             quantity, drink);
     }
+
+
+    // ----------------------------------------------------------
+    /**
+     * Resets the order state back to waiting by clearing the start time.
+     * Required for the Skip and Requeue feature.
+     * 
+     * @throws IllegalStateException
+     *             if the order hasn't started or is already complete
+     */
+    public void resetToWaiting() {
+        if (this.startedAt == null) {
+            throw new IllegalStateException("Order is already waiting.");
+        }
+        if (this.completedAt != null) {
+            throw new IllegalStateException(
+                "Cannot requeue a completed order.");
+        }
+        this.startedAt = null;
+    }
 }
