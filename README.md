@@ -5,7 +5,7 @@
 
 ### How Did Our Design Absorb the Change?
 
-For our updated feature, we added a predefined drink menu and automatic order assignment for multiple baristas. Instead of asking customers to enter a drink name and preparation time manually, the program now lets them select from a fixed menu. The model also automatically starts waiting orders whenever a barista becomes available.
+For our updated feature, we added a predefined drink menu and automatic order assignment for multiple baristas. Instead of asking customers to enter a drink name and preparation time manually, the program now lets them select from a fixed menu. The model also automatically starts waiting orders whenever a barista becomes available. We also added a requeue option. 
 
 The main classes involved were:
 
@@ -43,10 +43,6 @@ The multiple-barista feature required additional model behavior so that availabl
 
 Our current implementation focuses on the main ordering process and the new features. Some features from our original specification are still not included in the menu:
 
-- Cancelling an order.
-- Requeuing an order.
-- Estimating order wait times.
-- Displaying order statistics.
 - Displaying overdue-order reminders.
 - Changing the number of active baristas through the menu.
 
@@ -72,12 +68,12 @@ We are committing to the following features:
 
 - **Predefined drink menu:** Customers select from available drinks, each with a predetermined preparation time.
 - **Multiple baristas:** Orders are automatically assigned to available baristas, and waiting orders start when a barista becomes available.
+- **Order cancellation:** Customers can cancel orders anytime and the next order is immediatly started
+- **Skip-and-requeue:** You can requeue orders that have been canceled 
+- **Estimated wait times:** Order times can be viewed live
 
 We are postponing or dropping the following features to prioritize a stable final build:
 
-- Order cancellation.
-- Skip-and-requeue.
-- Estimated wait times.
 - Overdue-order reminders.
 - Additional order statistics.
 
