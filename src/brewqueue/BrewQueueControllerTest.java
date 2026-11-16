@@ -40,38 +40,42 @@ public class BrewQueueControllerTest extends TestCase{
     }
 
     public void testHandleAddOrder(){
-        view.stringInput = "Rudra";
-        view.drinkInput = "Latte";
-        view.intInput = 2;
-        view.doubleInput = 3.5;
-        controller.handleAddOrder();
-        assertEquals(1, model.getWaitingOrders().length);
-        assertEquals("Rudra",
-            model.getWaitingOrders()[0].getCustomerName());
+    view.stringInput = "Rudra";
+    view.drinkChoiceInput = 4;
+    view.intInput = 2;
+
+    controller.handleAddOrder();
+
+    assertEquals(0, model.getWaitingOrders().length);
+    assertEquals(1, model.getInProgressOrders().length);
+    assertEquals("Rudra",
+        model.getInProgressOrders()[0].getCustomerName());
     }
 
-    public void testHandleStartAndCompleteOrder(){
-        model.addOrder("Rudra", "Latte", 1, 3.0, false);
-        controller.handleStartNextOrder();
-        assertEquals(1, model.getInProgressOrders().length);
-        view.intInput = model.getInProgressOrders()[0].getOrderId();
-        controller.handleCompleteOrder();
-        assertEquals(1, model.getCompletedOrders().length);
-        assertEquals(0, model.getInProgressOrders().length);
+    public void testHandleCompleteOrder(){
+    Order order = model.addOrder("Rudra", "Latte", 1, 3.0, false);
+
+    view.intInput = order.getOrderId();
+    controller.handleCompleteOrder();
+
+    assertEquals(1, model.getCompletedOrders().length);
+    assertEquals(0, model.getInProgressOrders().length);
     }
 
     public void testDisplayOrders(){
-        model.addOrder("Rudra", "Latte", 1, 3.0, false);
-        controller.displayWaitingOrders();
-        assertEquals(1, view.waitingOrders.length);
-        Order order = model.startNextOrder();
-        controller.displayInProgressOrders();
-        assertEquals(1, view.inProgressOrders.length);
-        model.completeOrder(order.getOrderId());
-        controller.displayCompletedOrders();
-        assertEquals(1, view.completedOrders.length);
-    }
+    Order order = model.addOrder("Rudra", "Latte", 1, 3.0, false);
 
+    controller.displayWaitingOrders();
+    assertEquals(0, view.waitingOrders.length);
+
+    controller.displayInProgressOrders();
+    assertEquals(1, view.inProgressOrders.length);
+
+    model.completeOrder(order.getOrderId());
+
+    controller.displayCompletedOrders();
+    assertEquals(1, view.completedOrders.length);
+    }
     public void testRun(){
         view.intInputs = new int[] {99, 0};
         controller.run();
@@ -115,7 +119,7 @@ public class BrewQueueControllerTest extends TestCase{
             return stringInput;
         }
 
-        public int readInt(String prompt){
+        public int Int(String prompt){
             if (intInputs != null && intInputIndex < intInputs.length) {
                 return intInputs[intInputIndex++];
             }
