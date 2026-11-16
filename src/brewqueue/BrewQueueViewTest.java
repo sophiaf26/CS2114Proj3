@@ -105,6 +105,21 @@ public class BrewQueueViewTest extends TestCase {
         assertTrue(output().contains("took"));
     }
 
+    public void testMenuListsRequeue()
+    {
+        viewWithInput("").displayMenu();
+        assertTrue(output().contains("7. Requeue"));
+    }
+
+    public void testDisplayRequeued()
+    {
+        Order a = new Order(3, "Cy", "Mocha", 1, 2.0, false);
+        viewWithInput("").displayRequeued(a, 2, 2);
+        assertTrue(output().contains("Order #3"));
+        assertTrue(output().contains("moved back to the line"));
+        assertTrue(output().contains("2 of 2"));
+    }
+
     public void testDisplayStatistics()
     {
         viewWithInput("").displayStatistics(1, 2, 3, 4.5);
