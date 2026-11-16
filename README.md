@@ -9,7 +9,7 @@ For our updated feature, we added a predefined drink menu and automatic order as
 
 The main classes involved were:
 
-- **BrewQueueView:** Added the drink menu and input for selecting a drink.
+- **BrewQueueView:** Added the drink menu and input for selecting a drink and the requeue option.
 - **BrewQueueController:** Connects the drink selection to its name and preparation time, then sends the order to the model. It also displays whether an order started immediately or had to wait.
 - **BrewQueueModel:** Handles automatic assignment of waiting orders when a new order is added, an order is completed, or the number of active baristas changes.
 - **BrewQueueModelTest and BrewQueueControllerTest:** These tests need to cover the new order assignment and drink selection behavior.
@@ -18,7 +18,7 @@ In our D3 Next Steps, we predicted that the skip-and-requeue feature would requi
 
 ### Did the Change Cross the Model/View Line?
 
-The change involved all three main application layers, but each class kept its own responsibility.
+The change involved all three main classes, but each class kept its own responsibility.
 
 The view had to learn how to display the drink menu and collect a drink selection. However, it did not need to know how the model stores orders or assigns baristas. The controller translates the selection into a drink name and preparation time before passing the information to the model.
 
@@ -30,12 +30,11 @@ Our `LinkedQueue` and `Order` classes did not need to change for these features.
 
 Our original D3 plan focused on skip-and-requeue. We predicted adding a `requeueOrder(int orderId)` method to the model, a controller handler, and a new view menu option.
 
-Instead, we prioritized two different features:
+Instead, we prioritized three different features:
 
 - A fixed drink menu with predetermined preparation times.
 - Multiple baristas with automatic assignment of waiting orders.
-
-Because of this change, we did not prioritize the requeue method or its planned tests. We also changed the menu so customers no longer need to enter a custom drink name or preparation time.
+- Requeue canceled orders 
 
 The multiple-barista feature required additional model behavior so that available baristas could automatically receive waiting orders. This was different from our original plan because it changed how orders move between the waiting and in-progress collections.
 
