@@ -36,6 +36,7 @@ public class BrewQueueView {
         System.out.println("4. Show waiting orders");
         System.out.println("5. Show in-progress orders");
         System.out.println("6. Show completed orders");
+        System.out.println("7. Requeue an in-progress order (back of line)");
         System.out.println("0. Exit");
     }
 
@@ -117,6 +118,20 @@ public class BrewQueueView {
             }
             System.out.println(describe(order) + took);
         }
+    }
+
+    /**
+     * Confirms that an order was moved from preparation back to the line.
+     *
+     * @param order the requeued order
+     * @param position its 1-based place in the waiting line
+     * @param lineLength how many orders are now waiting
+     */
+    public void displayRequeued(Order order, int position, int lineLength)
+    {
+        System.out.println(describe(order) + " was moved back to the line.");
+        System.out.println("It is now " + position + " of " + lineLength
+            + " in line.");
     }
 
     /**
