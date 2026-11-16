@@ -59,7 +59,7 @@ public class BrewQueueController {
             else if (choice == 5) {
                 displayCompletedOrders();
             }
-            else if (choice == 7) {
+            else if (choice == 6) {
                 handleRequeueOrder();
                 refreshDisplays();
             }
